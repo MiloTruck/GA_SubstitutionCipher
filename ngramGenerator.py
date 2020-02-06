@@ -1,0 +1,36 @@
+from nltk import FreqDist
+import csv
+
+# Function to generate n-grams from a word
+def generate_ngrams(word, n):            
+    ngrams = [word[i:i+n] for i in range(len(word)-n+1)]
+    return ngrams
+
+# Setting up training text
+file = open('TheGreatGatsby.txt', 'r')
+text = file.read()
+words = text.split()
+
+# Generating n-grams from training text
+ngrams = []
+for word in words:
+    ngrams += generate_ngrams(word, n=3)
+
+# Processing n-grams to 1. Remove non-alphabetic words 2. Convert n-grams to uppercase
+processed_ngrams = []
+for ngram in ngrams:
+    if ngram.isalpha():
+        ngram_upper = ngram.upper()
+        processed_ngrams.append(ngram_upper)
+
+# Counting the frequency of n-gram
+frequency = FreqDist(processed_ngrams)
+
+# Writing n-grams and its frequency into a csv
+headers = ['n-gram', 'Frequency']
+with open('ngramFrequency.csv', 'w', newline="") as csv_file:  
+    writer = csv.writer(csv_file)
+    writer.writerow(headers)
+    for key, value in frequency.items():
+       writer.writerow([key, value])
+
