@@ -1,2 +1,2 @@
-# GA_Sub
-# GA_Sub
+# Genetic Algorithm: Substitution Cipher
+

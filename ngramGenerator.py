@@ -1,5 +1,6 @@
 from nltk import FreqDist
 import csv
+import collections
 
 # Function to generate n-grams from a word
 def generate_ngrams(word, n):            
@@ -25,6 +26,10 @@ for ngram in ngrams:
 
 # Counting the frequency of n-gram
 frequency = FreqDist(processed_ngrams)
+
+# Sorting n-grams descending based on frequency
+sorted_frequency = sorted(frequency.items(), key=lambda x: x[1], reverse=True)
+frequency = collections.OrderedDict(sorted_frequency)
 
 # Writing n-grams and its frequency into a csv
 headers = ['n-gram', 'Frequency']
