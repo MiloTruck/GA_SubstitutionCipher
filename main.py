@@ -3,20 +3,6 @@ import csv
 import math
 from random import randint, uniform
 
-# Genetic Algorithm Parameters
-generations = 500
-population_size = 500
-tournament_size = 20
-tournament_winner_probability = 0.75
-crossover_probability = 0.65
-crossover_points_count = 5
-mutation_probability = 0.2
-elitism_percentage = 0.15
-seeding = True
-
-# Default variables
-letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-
 def get_ngram_frequency(filename):
     ngram_frequency = {}
     
@@ -119,7 +105,7 @@ def initialization():
     
     return population
 
-def evaluation():
+def evaluation(population):
     fitness = []
 
     for key in population:
@@ -129,7 +115,7 @@ def evaluation():
 
     return fitness
 
-def rejection_sampling():
+def rejection_sampling(fitness):
     index = -1
     highest_probability = max(fitness)
         
@@ -143,7 +129,7 @@ def rejection_sampling():
     
     return index
 
-def elitism():
+def elitism(population, fitness):
     population_fitness = {}
     
     for i in range(population_size):
@@ -155,17 +141,16 @@ def elitism():
     population_fitness = {k: v for k, v in sorted(population_fitness.items(), key=lambda item: item[1])}
     sorted_population = list(population_fitness.keys())
 
-    elitism_count = int(elitism_percentage * population_size)
     elitist_population = sorted_population[-elitism_count:]
 
     return elitist_population
 
-def reproduction_RWS():
+def reproduction_RWS(population, fitness):
     crossover_population = []
 
-    while len(crossover_population) < population_size:
-        parent_one_index = rejection_sampling()
-        parent_two_index = rejection_sampling()
+    while len(crossover_population) < crossover_count:
+        parent_one_index = rejection_sampling(fitness)
+        parent_two_index = rejection_sampling(fitness)
 
         parent_one = population[parent_one_index]
         parent_two = population[parent_two_index]
@@ -175,19 +160,37 @@ def reproduction_RWS():
 
         crossover_population += [offspring_one, offspring_two]
     
+    crossover_population = mutation(crossover_population, crossover_count)
+
     return crossover_population
 
-def mutation():
+def mutation(population, population_size):
     for i in range(population_size):
         r = uniform(0, 1)
 
-        if r > mutation_probability:
+        if r < mutation_probability:
             key = population[i]
             mutated_key = mutate_key(key)
 
-            population[i] = mutate_key
+            population[i] = mutated_key
 
     return population
+
+# Genetic Algorithm Parameters
+generations = 500
+population_size = 500
+tournament_size = 20
+tournament_winner_probability = 0.75
+crossover_probability = 0.65
+crossover_points_count = 5
+mutation_probability = 0.2
+elitism_percentage = 0.15
+seeding = True
+
+# Default variables
+letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+elitism_count = int(elitism_percentage * population_size)
+crossover_count = population_size - elitism_count
 
 # Defining the substitution cipher
 ciphertext = 'Hrovmxv rm gsv xlfig! Xsziovh Wzimzb szw bvhgviwzb kovzwvw Mlg Tfrogb gl zm rmwrxgnvmg wvmlfmxrmt srn (drgs rmurmrgv qrmtov zmw qzmtov) uli gszg sv dzh z uzohv gizrgli gl lfi hvivmv, roofhgirlfh, vcxvoovmg, zmw hl uligs, kirmxv, lfi Oliw gsv Prmt, yb ivzhlm lu srh szermt, lm wrevih lxxzhrlmh, zmw yb wrevih nvzmh zmw dzbh, zhhrhgvw Ovdrh, gsv Uivmxs Prmt, rm srh dzih ztzrmhg lfi hzrw hvivmv, roofhgirlfh, vcxvoovmg, zmw hl uligs; gszg dzh gl hzb, yb xlnrmt zmw tlrmt, yvgdvvm gsv wlnrmrlmh lu lfi hzrw hvivmv, roofhgirlfh, vcxvoovmg, zmw hl uligs, zmw gslhv lu gsv hzrw Uivmxs Ovdrh, zmw drxpvwob, uzohvob, gizrglilfhob, zmw lgsvidrhv vero-zweviyrlfhob, ivevzormt gl gsv hzrw Uivmxs Ovdrh dszg ulixvh lfi hzrw hvivmv, roofhgirlfh, vcxvoovmg, zmw hl uligs, szw rm kivkzizgrlm gl hvmw gl Xzmzwz zmw Mligs Znvirxz. Gsrh nfxs, Qviib, drgs srh svzw yvxlnrmt nliv zmw nliv hkrpb zh gsv ozd gvinh yirhgovw rg, nzwv lfg drgs sftv hzgrhuzxgrlm, zmw hl ziirevw xrixfrglfhob zg gsv fmwvihgzmwrmt gszg gsv zulivhzrw, zmw levi zmw levi ztzrm zulivhzrw, Xsziovh Wzimzb, hgllw gsviv yvuliv srn fklm srh girzo; gszg gsv qfib dviv hdvzirmt rm; zmw gszg Ni. Zgglimvb-Tvmvizo dzh nzprmt ivzwb gl hkvzp.'
@@ -201,14 +204,30 @@ filename = 'ngramFrequency.csv'
 ngram_frequency = get_ngram_frequency(filename)
 
 # Main Program
-for _ in range(generations):
+if __name__== "__main__":
     population = initialization()
-    fitness = evaluation()
-    elitist_population = elitism()
-    crossover_population = reproduction_RWS()
+    
+    for _ in range(generations):
+        fitness = evaluation(population)
+        elitist_population = elitism(population, fitness)
+        crossover_population = reproduction_RWS(population, fitness)
 
-    population = elitist_population + crossover_population
-    population = mutation()
+        population = elitist_population + crossover_population
+        #population = mutation()
 
-    average_fitness = sum(fitness) / population_size
-    print('Average Fitness:', average_fitness)
+        highest_fitness = max(fitness)
+        average_fitness = sum(fitness) / population_size
+
+        index = fitness.index(highest_fitness)
+        key = population[index]
+        decrypted_text = decrypt(key)
+
+        print('Average Fitness:', average_fitness)
+        print('Max Fitness:', highest_fitness)
+        print('Decrypted Text:', decrypted_text)
+        print('-'*50)
+
+
+# TODO
+# Population Size is 501 for some reason
+# Tournament Selection
