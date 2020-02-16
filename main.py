@@ -19,7 +19,8 @@ def get_ngram_frequency(filename):
 
     return ngram_frequency
 
-def generate_ngrams(word, n):            
+def generate_ngrams(word):
+    n = ngram_length            
     ngrams = [word[i:i+n] for i in range(len(word)-n+1)]
 
     processed_ngrams = []
@@ -49,7 +50,7 @@ def decrypt(key):
     return decrypted_text
 
 def calculate_key_fitness(text):
-    ngrams = generate_ngrams(text, 3)
+    ngrams = generate_ngrams(text)
     
     fitness = 0
     for ngram in ngrams:
@@ -115,20 +116,6 @@ def evaluation(population):
 
     return fitness
 
-def rejection_sampling(fitness):
-    index = -1
-    highest_probability = max(fitness)
-        
-    selected = False
-    while not selected:
-        index = randint(0, population_size-1)
-        probability = fitness[index]
-
-        r = uniform(0, highest_probability)
-        selected = (r < probability)
-    
-    return index
-
 def elitism(population, fitness):
     population_fitness = {}
     
@@ -145,15 +132,65 @@ def elitism(population, fitness):
 
     return elitist_population
 
-def reproduction_RWS(population, fitness):
+def roulette_wheel_selection(fitness):
+    index = -1
+    highest_probability = max(fitness)
+        
+    selected = False
+    while not selected:
+        index = randint(0, population_size-1)
+        probability = fitness[index]
+
+        r = uniform(0, highest_probability)
+        selected = (r < probability)
+    
+    return index
+
+def tournament_selection(population, fitness):
+    population_copy = population.copy()
+    selected_keys = []
+
+    for a in range(2):
+        tournament_population = {}
+        
+        for _ in range(tournament_size):
+            r = randint(0, len(population_copy)-1)
+            key = population_copy[r]
+            key_fitness = fitness[r]
+
+            tournament_population[key] = key_fitness
+            population_copy.pop(r)
+
+        sorted_tournament_population = {k: v for k, v in sorted(tournament_population.items(), key=lambda item: item[1], reverse=True)}
+        tournament_keys = list(sorted_tournament_population.keys())
+        
+        index = -1
+        selected = False
+        while not selected:
+            index = randint(0, tournament_size-1)
+            probability = tournament_probabilities[index]
+
+            r = uniform(0, tournament_winner_probability)
+            selected = (r < probability)
+    
+        selected_keys.append(tournament_keys[index])
+
+    return selected_keys[0], selected_keys[1]
+
+def reproduction(population, fitness):
     crossover_population = []
 
     while len(crossover_population) < crossover_count:
-        parent_one_index = rejection_sampling(fitness)
-        parent_two_index = rejection_sampling(fitness)
+        parent_one, parent_two = None, None
 
-        parent_one = population[parent_one_index]
-        parent_two = population[parent_two_index]
+        if selection_method == 'RWS':
+            parent_one_index = roulette_wheel_selection(fitness)
+            parent_two_index = roulette_wheel_selection(fitness)
+
+            parent_one = population[parent_one_index]
+            parent_two = population[parent_two_index]
+        elif selection_method == 'TS':
+            parent_one, parent_two = tournament_selection(population, fitness)
 
         offspring_one = merge_keys(parent_one, parent_two)
         offspring_two = merge_keys(parent_two, parent_one)
@@ -163,7 +200,7 @@ def reproduction_RWS(population, fitness):
     crossover_population = mutation(crossover_population, crossover_count)
 
     return crossover_population
-
+    
 def mutation(population, population_size):
     for i in range(population_size):
         r = uniform(0, 1)
@@ -185,15 +222,24 @@ crossover_probability = 0.65
 crossover_points_count = 5
 mutation_probability = 0.2
 elitism_percentage = 0.15
-seeding = True
+selection_method = 'TS'
+
+# Other parameters
+ngram_length = 3
 
 # Default variables
 letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 elitism_count = int(elitism_percentage * population_size)
 crossover_count = population_size - elitism_count
 
+tournament_probabilities = [tournament_winner_probability]
+
+for i in range(1, tournament_size):
+    probability = tournament_probabilities[i-1] * (1.0 - tournament_winner_probability)
+    tournament_probabilities.append(probability)
+
 # Defining the substitution cipher
-ciphertext = 'Hrovmxv rm gsv xlfig! Xsziovh Wzimzb szw bvhgviwzb kovzwvw Mlg Tfrogb gl zm rmwrxgnvmg wvmlfmxrmt srn (drgs rmurmrgv qrmtov zmw qzmtov) uli gszg sv dzh z uzohv gizrgli gl lfi hvivmv, roofhgirlfh, vcxvoovmg, zmw hl uligs, kirmxv, lfi Oliw gsv Prmt, yb ivzhlm lu srh szermt, lm wrevih lxxzhrlmh, zmw yb wrevih nvzmh zmw dzbh, zhhrhgvw Ovdrh, gsv Uivmxs Prmt, rm srh dzih ztzrmhg lfi hzrw hvivmv, roofhgirlfh, vcxvoovmg, zmw hl uligs; gszg dzh gl hzb, yb xlnrmt zmw tlrmt, yvgdvvm gsv wlnrmrlmh lu lfi hzrw hvivmv, roofhgirlfh, vcxvoovmg, zmw hl uligs, zmw gslhv lu gsv hzrw Uivmxs Ovdrh, zmw drxpvwob, uzohvob, gizrglilfhob, zmw lgsvidrhv vero-zweviyrlfhob, ivevzormt gl gsv hzrw Uivmxs Ovdrh dszg ulixvh lfi hzrw hvivmv, roofhgirlfh, vcxvoovmg, zmw hl uligs, szw rm kivkzizgrlm gl hvmw gl Xzmzwz zmw Mligs Znvirxz. Gsrh nfxs, Qviib, drgs srh svzw yvxlnrmt nliv zmw nliv hkrpb zh gsv ozd gvinh yirhgovw rg, nzwv lfg drgs sftv hzgrhuzxgrlm, zmw hl ziirevw xrixfrglfhob zg gsv fmwvihgzmwrmt gszg gsv zulivhzrw, zmw levi zmw levi ztzrm zulivhzrw, Xsziovh Wzimzb, hgllw gsviv yvuliv srn fklm srh girzo; gszg gsv qfib dviv hdvzirmt rm; zmw gszg Ni. Zgglimvb-Tvmvizo dzh nzprmt ivzwb gl hkvzp.'
+ciphertext = 'So we beat on, boats against the current, borne back ceaselessly into the past.'
 plaintext = ''
 key = ''
 
@@ -210,10 +256,9 @@ if __name__== "__main__":
     for _ in range(generations):
         fitness = evaluation(population)
         elitist_population = elitism(population, fitness)
-        crossover_population = reproduction_RWS(population, fitness)
+        crossover_population = reproduction(population, fitness)
 
         population = elitist_population + crossover_population
-        #population = mutation()
 
         highest_fitness = max(fitness)
         average_fitness = sum(fitness) / population_size
@@ -224,10 +269,6 @@ if __name__== "__main__":
 
         print('Average Fitness:', average_fitness)
         print('Max Fitness:', highest_fitness)
+        print('Key:', key)
         print('Decrypted Text:', decrypted_text)
         print('-'*50)
-
-
-# TODO
-# Population Size is 501 for some reason
-# Tournament Selection
