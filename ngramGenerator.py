@@ -15,7 +15,7 @@ words = text.split()
 # Generating n-grams from training text
 ngrams = []
 for word in words:
-    ngrams += generate_ngrams(word, n=3)
+    ngrams += generate_ngrams(word, n=2)
 
 # Processing n-grams to 1. Remove non-alphabetic words 2. Convert n-grams to uppercase
 processed_ngrams = []
@@ -33,7 +33,7 @@ frequency = collections.OrderedDict(sorted_frequency)
 
 # Writing n-grams and its frequency into a csv
 headers = ['n-gram', 'Frequency']
-with open('ngramFrequency.csv', 'w', newline="") as csv_file:  
+with open('bi-ngramFrequency.csv', 'w', newline="") as csv_file:  
     writer = csv.writer(csv_file)
     writer.writerow(headers)
     for key, value in frequency.items():

@@ -19,8 +19,7 @@ def get_ngram_frequency(filename):
 
     return ngram_frequency
 
-def generate_ngrams(word):
-    n = ngram_length            
+def generate_ngrams(word, n):
     ngrams = [word[i:i+n] for i in range(len(word)-n+1)]
 
     processed_ngrams = []
@@ -50,14 +49,24 @@ def decrypt(key):
     return decrypted_text
 
 def calculate_key_fitness(text):
-    ngrams = generate_ngrams(text)
+    bigrams = generate_ngrams(text, 2) 
+    trigrams = generate_ngrams(text, 3)
     
-    fitness = 0
-    for ngram in ngrams:
-        if ngram in ngram_frequency:
-            frequency = int(ngram_frequency[ngram])
-            fitness += math.log2(frequency)
-
+    bigram_fitness = 0
+    if bigram_weight > 0:
+        for bigram in bigrams:
+            if bigram in bigram_frequency:
+                frequency = int(bigram_frequency[bigram])
+                bigram_fitness += math.log2(frequency)
+    
+    trigram_fitness = 0
+    if trigram_weight > 0:    
+        for trigram in trigrams:
+            if trigram in trigram_frequency:
+                frequency = int(trigram_frequency[trigram])
+                trigram_fitness += math.log2(frequency)
+        
+    fitness = (bigram_fitness * bigram_weight) + (trigram_fitness * trigram_weight)
     return fitness
 
 def merge_keys(one, two):
@@ -225,7 +234,8 @@ elitism_percentage = 0.15
 selection_method = 'TS'
 
 # Other parameters
-ngram_length = 3
+bigram_weight = 0.0
+trigram_weight = 1.0
 
 # Default variables
 letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -239,15 +249,18 @@ for i in range(1, tournament_size):
     tournament_probabilities.append(probability)
 
 # Defining the substitution cipher
-ciphertext = 'So we beat on, boats against the current, borne back ceaselessly into the past.'
+ciphertext = "Zmw, zugvi ylzhgrmt gsrh dzb lu nb glovizmxv, R xlnv gl gsv zwnrhhrlm gszg rg szh z ornrg. Xlmwfxg nzb yv ulfmwvw lm gsv sziw ilxp li gsv dvg nzihsvh yfg zugvi z xvigzrm klrmg R wlm'g xziv dszg rg'h ulfmwvw lm. Dsvm R xznv yzxp uiln gsv Vzhg ozhg zfgfnm R uvog gszg R dzmgvw gsv dliow gl yv rm fmrulin zmw zg z hlig lu nlizo zggvmgrlm ulivevi; R dzmgvw ml nliv irlglfh vcxfihrlmh drgs kirerovtvw tornkhvh rmgl gsv sfnzm svzig."
 plaintext = ''
 key = ''
 
 ciphertext = ciphertext.upper()
 
 # Getting pre-computed ngram frequency
-filename = 'ngramFrequency.csv'
-ngram_frequency = get_ngram_frequency(filename)
+bigram_filename = 'bi-ngramFrequency.csv'
+bigram_frequency = get_ngram_frequency(bigram_filename)
+
+trigram_filename = 'tri-ngramFrequency.csv'
+trigram_frequency = get_ngram_frequency(trigram_filename)
 
 # Main Program
 if __name__== "__main__":
