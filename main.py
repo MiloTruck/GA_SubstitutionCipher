@@ -1,4 +1,3 @@
-from agent import Agent
 import csv
 import math
 from random import randint, uniform
