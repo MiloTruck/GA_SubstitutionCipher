@@ -8,7 +8,23 @@ Thus, frequency analysis can be used to break substitution ciphers although indi
 
 ## Usage
 
-To run the program, run the `main.py` python script in a terminal using the command:
+### Generating n-gram frequency
+`ngramGenerator.py` is used to generate the frequencies of n-grams in the training text. The result is stored in the `data/` directory as a csv file.
+
+The filename and n-gram length has to be defined in `ngramGenerator.py`:  
+```python
+# Define csv name and n-gram length
+filename = 'bi-ngramFrequency.csv'
+n = 2
+```
+
+To generate n-gram frequency data, run `ngramGenerator.py` in a terminal using python3:
+```
+python3 ngramGenerator.py
+```
+
+### Substitution Cipher Decryption 
+To run the decryption program, run the `main.py` python script in a terminal using the command:
 ```
 python3 main.py
 ```
