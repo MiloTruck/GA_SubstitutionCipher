@@ -1,5 +1,4 @@
 # Genetic Algorithm and Substitution Ciphers
-*Note that this project is still under progress.*
 
 This project uses Genetic Algorithms to decrypt substitution ciphers by frequency analysis.
 
@@ -14,15 +13,7 @@ To run the program, run the `main.py` python script in a terminal using the comm
 python3 main.py
 ```
 
-Note that the substitution cipher has to be defined in `main.py` first:
-```python
-# Defining the substitution cipher
-ciphertext = ''
-plaintext = ''
-key = ''
-```
-
-Other parameters affecting the program can also be changed in `main.py`:
+Parameters affecting the program can also be changed in `config.py`:
 ```python
 # Genetic Algorithm Parameters
 generations = 500
@@ -47,9 +38,3 @@ http://gutenberg.net.au/ebooks02/0200041.txt
 
 This project was heavily inspired by the paper **Decrypting Substitution Ciphers with Genetic Algorithms** by **Jason Brownbridge**. All credits go to him for the original idea. A copy of the paper can be obtained here:
 https://people.cs.uct.ac.za/~jkenwood/JasonBrownbridge.pdf
-
-## Future Work
-* Implementing a wrapper for `main.py` for smoother usage.
-* Including word ngrams for frequency analysis.
-* File organization.
-

@@ -1,3 +1,4 @@
+import config
 import csv
 import math
 from random import randint, uniform
@@ -222,19 +223,19 @@ def mutation(population, population_size):
     return population
 
 # Genetic Algorithm Parameters
-generations = 500
-population_size = 500
-tournament_size = 20
-tournament_winner_probability = 0.75
-crossover_probability = 0.65
-crossover_points_count = 5
-mutation_probability = 0.2
-elitism_percentage = 0.15
-selection_method = 'TS'
+generations = config.generations
+population_size = config.population_size
+tournament_size = config.tournament_size
+tournament_winner_probability = config.tournament_winner_probability
+crossover_probability = config.crossover_probability
+crossover_points_count = config.crossover_points_count
+mutation_probability = config.mutation_probability
+elitism_percentage = config.elitism_percentage
+selection_method = config.selection_method
 
 # Other parameters
-bigram_weight = 0.0
-trigram_weight = 1.0
+bigram_weight = config.bigram_weight
+trigram_weight = config.trigram_weight
 
 # Default variables
 letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -248,17 +249,17 @@ for i in range(1, tournament_size):
     tournament_probabilities.append(probability)
 
 # Defining the substitution cipher
-ciphertext = "Zmw, zugvi ylzhgrmt gsrh dzb lu nb glovizmxv, R xlnv gl gsv zwnrhhrlm gszg rg szh z ornrg. Xlmwfxg nzb yv ulfmwvw lm gsv sziw ilxp li gsv dvg nzihsvh yfg zugvi z xvigzrm klrmg R wlm'g xziv dszg rg'h ulfmwvw lm. Dsvm R xznv yzxp uiln gsv Vzhg ozhg zfgfnm R uvog gszg R dzmgvw gsv dliow gl yv rm fmrulin zmw zg z hlig lu nlizo zggvmgrlm ulivevi; R dzmgvw ml nliv irlglfh vcxfihrlmh drgs kirerovtvw tornkhvh rmgl gsv sfnzm svzig."
+ciphertext = input('Ciphertext: ')
 plaintext = ''
 key = ''
 
 ciphertext = ciphertext.upper()
 
 # Getting pre-computed ngram frequency
-bigram_filename = 'bi-ngramFrequency.csv'
+bigram_filename = 'data/bi-ngramFrequency.csv'
 bigram_frequency = get_ngram_frequency(bigram_filename)
 
-trigram_filename = 'tri-ngramFrequency.csv'
+trigram_filename = 'data/tri-ngramFrequency.csv'
 trigram_frequency = get_ngram_frequency(trigram_filename)
 
 # Main Program
