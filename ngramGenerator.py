@@ -8,8 +8,8 @@ def generate_ngrams(word, n):
     return ngrams
 
 # Define csv name and n-gram length
-filename = 'bi-ngramFrequency.csv'
-n = 2
+filename = input("Name of CSV file to output result: ")
+n = input("Length of n-grams: ")
 
 # Setting up training text
 file = open('data/TheGreatGatsby.txt', 'r')
