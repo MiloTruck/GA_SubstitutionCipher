@@ -69,7 +69,7 @@ Decrypted Text: 'IN MY YOUNGER AND MORE VULNERABLE YEARS MY FATHER GAVE ME SOME 
 ```
 
 
-If you wish to tweak the genetic algorithm, the algorithm's parameters can be changed in `config.py`:
+If you wish to experiment with the genetic algorithm, the algorithm's parameters can be changed in `config.py`:
 ```python
 # Genetic Algorithm Parameters
 generations = 500
