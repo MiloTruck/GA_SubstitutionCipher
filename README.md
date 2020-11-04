@@ -9,6 +9,7 @@ The algorithm repeatedly generates random keys and decrypts the ciphertext using
 Thus, frequency analysis can be used to break substitution ciphers although individual letters are substituted with others. The plaintext, after decryption with a generated key, which matches the frequency of ngrams in English the most, has the highest probability of being the correct key.
 
 ## Demo
+![Demo](Demo.gif)
 The plaintext used is from the opening line of **The Great Gatsby**:
 ```
 In my younger and more vulnerable years my father gave me some advice that I've been turning over in my mind ever since. Whenever you feel like criticizing anyone, he told me, just remember that all the people in this world haven't had the advantages that you've had.
