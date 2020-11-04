@@ -47,7 +47,7 @@ Name of CSV file to output result:
 Length of n-grams: 
 ```
 * *filename* refers to the name of the CSV file where the n-gram frequency will be stored.
-* *n-gram length* refers to the length of n-grams to extract. I recommend using a length of 2 as it gave the provided results.
+* *n-gram length* refers to the length of n-grams to extract. I recommend using a length of 2 as it provided the best results.
 
 ### Substitution Cipher Decryption 
 The decryption program can be used by importing `GASolver.py`, and using the `GeneticSolver` class. An example has been provided in `example.py`:
