@@ -4,9 +4,9 @@ This project uses Genetic Algorithms to decrypt substitution ciphers by frequenc
 
 In the English language, some sequences of letters appear more often than others, such as "AND". By analysing the frequency of bi-grams (2 letters) and tri-grams (3 letters) in English text, we are able to observe a pattern in letter frequencies in the English language. In this project, I obtained the letter frequencies using **The Great Gatsby** as training text.
 
-The algorithm repeatedly generates random keys and decrypts the ciphertext using these keys. The key is assigned a fitness value based on how much the letter frequencies of the decrypted text matches the letter frequencies from the training text. Over numerous generations, the keys' fitness improves, which increases the chance of the key decrypting the ciphertext correctly.
+The algorithm repeatedly generates random keys and decrypts the ciphertext using these keys. Each key is assigned a fitness value based on how much the letter frequencies of the decrypted text matches the letter frequencies from the training text. Over numerous generations, the keys' fitness improves, which increases the chance of the key decrypting the ciphertext correctly.
 
-Thus, frequency analysis can be used to break substitution ciphers although individual letters are substituted with others. The plaintext, after decryption with a generated key, which matches the frequency of ngrams in English, has the highest probability of being the correct key.
+Thus, frequency analysis can be used to break substitution ciphers although individual letters are substituted with others. The plaintext, after decryption with a generated key, which matches the frequency of ngrams in English the most, has the highest probability of being the correct key.
 
 ## Demo
 The plaintext used is from the opening line of **The Great Gatsby**:
