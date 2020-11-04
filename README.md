@@ -112,8 +112,8 @@ Below is an explanation of each paramter. I recommend reading the paper **Decryp
 | Crossover Points Count        | Int                               | Number of crossover points between 2 chromosomes                                |
 | Mutation Probability          | Float between 0 and 1             | Probability of mutation of a chromosome in the population                      |
 | Elitism Percentage            | Float between 0 and 1             | Percentage of population to copy over to the next population                    |
-| Selection Method              | 'TS' or 'RWS'                     | Tournament Selection (TS) or Roulette Wheel Selection (RWS), the selection method.    |
-| Terminate                     | Int                               | Number of iterations where highest_fitness does not increase before terminating |
+| Selection Method              | 'TS' or 'RWS'                     | Tournament Selection (TS) or Roulette Wheel Selection (RWS), the selection method.|
+| Terminate                     | Int                               | Number of iterations where *highest_fitness* does not increase before terminating |
 | Bigram Weight                 | Float between 0 and 1 (inclusive) | How dependent fitness is on bigrams                                             |
 | Trigram Weight                | Float between 0 and 1 (inclusive) | How dependent fitness is on trigrams                                            |
 | Verbose                       | Boolean                           | Output information at every iteration                                           |
