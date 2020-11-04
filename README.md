@@ -110,9 +110,9 @@ Below is an explanation of each paramter. I recommend reading the paper **Decryp
 | Tournament Winner Probability | Float between 0 and 1             | Probability of chromosomes being selected in tournament selection               |
 | Crossover Probability         | Float between 0 and 1             | Probability of crossover occuring                                               |
 | Crossover Points Count        | Int                               | Number of crossover points between 2 chromosomes                                |
-| Mutation Probability          | Float between 0 and 1             | Probability of a chromosome in the population mutating                          |
+| Mutation Probability          | Float between 0 and 1             | Probability of mutation of a chromosome in the population                      |
 | Elitism Percentage            | Float between 0 and 1             | Percentage of population to copy over to the next population                    |
-| Selection Method              | 'TS' or 'RWS'                     | Tournament Selection (TS) or Roulette Wheel Selection, the selection method.    |
+| Selection Method              | 'TS' or 'RWS'                     | Tournament Selection (TS) or Roulette Wheel Selection (RWS), the selection method.    |
 | Terminate                     | Int                               | Number of iterations where highest_fitness does not increase before terminating |
 | Bigram Weight                 | Float between 0 and 1 (inclusive) | How dependent fitness is on bigrams                                             |
 | Trigram Weight                | Float between 0 and 1 (inclusive) | How dependent fitness is on trigrams                                            |
