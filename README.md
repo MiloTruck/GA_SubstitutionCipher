@@ -1,4 +1,4 @@
-# Genetic Algorithm and Substitution Ciphers
+# Decrypting Substitution Ciphers with Genetic Algorithms
 
 This project uses Genetic Algorithms to decrypt substitution ciphers by frequency analysis.
 
